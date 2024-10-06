@@ -14,12 +14,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const surveyModel_1 = __importDefault(require("../models/surveyModel"));
 class SurveyController {
-    getAllSurveys() {
+    getAllSurveys(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const surveys = yield surveyModel_1.default.getAllSurveys();
+                res.status(200).json(surveys);
+            }
+            catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         });
     }
-    getSurveyById() {
+    getSurveyById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const survey = yield surveyModel_1.default.getSurveyById(parseInt(req.params.id));
+                if (survey == null) {
+                    res.status(404).json({ message: 'Survey not found' });
+                    return;
+                }
+                res.status(200).json(survey);
+            }
+            catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         });
     }
     createSurvey(req, res) {
