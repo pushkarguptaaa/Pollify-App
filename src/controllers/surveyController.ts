@@ -36,12 +36,22 @@ class SurveyController{
         }
     }
 
-    async updateSurvey(){
-
+    async updateSurvey(req: Request, res: Response): Promise<void>{
+        try {
+            const updatedSurvey = await SurveyModel.updateSurvey(parseInt(req.params.id), req.body);
+            res.status(200).json(updatedSurvey);
+          } catch (error: any) {
+            res.status(400).json({ message: error.message });
+          }
     }
 
-    async deleteSurvey() {
-
+    async deleteSurvey(req: Request, res: Response): Promise<void> {
+        try {
+            await SurveyModel.deleteSurvey(parseInt(req.params.id)); 
+            res.status(200).json({ message: 'Survey deleted' });
+          } catch (error: any) {
+            res.status(500).json({ message: error.message });
+          }
     }
 }
 

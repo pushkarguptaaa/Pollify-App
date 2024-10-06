@@ -43,9 +43,28 @@ class SurveyModel {
     }
     static updateSurvey(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const updateData = {};
+            if (data.title) {
+                updateData.title = data.title;
+            }
+            if (data.questions) {
+                updateData.questions = {
+                    create: data.questions.map(question => {
+                        var _a;
+                        return ({
+                            text: question.text,
+                            options: {
+                                create: ((_a = question.options) === null || _a === void 0 ? void 0 : _a.map(option => ({
+                                    text: option.text,
+                                }))) || [],
+                            },
+                        });
+                    }),
+                };
+            }
             return yield prisma.survey.update({
                 where: { id },
-                data
+                data: updateData,
             });
         });
     }

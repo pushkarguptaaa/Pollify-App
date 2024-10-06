@@ -53,12 +53,26 @@ class SurveyController {
             }
         });
     }
-    updateSurvey() {
+    updateSurvey(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedSurvey = yield surveyModel_1.default.updateSurvey(parseInt(req.params.id), req.body);
+                res.status(200).json(updatedSurvey);
+            }
+            catch (error) {
+                res.status(400).json({ message: error.message });
+            }
         });
     }
-    deleteSurvey() {
+    deleteSurvey(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield surveyModel_1.default.deleteSurvey(parseInt(req.params.id));
+                res.status(200).json({ message: 'Survey deleted' });
+            }
+            catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         });
     }
 }
